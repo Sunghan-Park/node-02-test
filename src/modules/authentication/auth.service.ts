@@ -88,7 +88,20 @@ export class AuthService {
     ) {
       domain = 'localhost';
     } else {
-      domain = requestDomain;
+      // Extract the domain properly from the origin URL
+      try {
+        // Handle if requestDomain is a full URL (with protocol)
+        if (requestDomain.includes('://')) {
+          const url = new URL(requestDomain);
+          domain = url.hostname;
+        } else {
+          // Handle if requestDomain is just a hostname or contains port
+          domain = requestDomain.split(':')[0];
+        }
+      } catch (error) {
+        console.error('Error parsing domain:', error);
+        domain = requestDomain;
+      }
     }
 
     return {
@@ -146,7 +159,7 @@ export class AuthService {
   }
 
   async uploadProfile(file: Express.Multer.File) {
-    // const url = await this.s3Service.uploadFile(file, 'profile');
-    // return url;
+    const url = await this.s3Service.uploadFile(file, 'profile');
+    return url;
   }
 }

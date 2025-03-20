@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ListAllPostDto } from './dto/list-all-post.dto';
 import { PostView } from './entities/post-view.entity';
 import { OrderByOption } from './enums/order-by-option.emums';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostsService {
@@ -132,17 +133,17 @@ export class PostsService {
 
     return data;
   }
-  // async update(id: number, updatePostDto: UpdatePostDto) {
-  //   await this.findOne(id);
-  //   await this.postsRepository.update(id, updatePostDto);
-  //   return await this.findOne(id);
-  // }
+  async update(id: number, updatePostDto: UpdatePostDto, user: User) {
+    await this.findOne(id.toString(), user);
+    await this.postsRepository.update(id, updatePostDto);
+    return await this.findOne(id.toString(), user);
+  }
 
-  // async remove(id: number) {
-  //   const post = await this.findOne(id);
-  //   await this.postsRepository.remove(post);
-  //   return { message: `Post with ID ${id} has been deleted` };
-  // }
+  async remove(id: number, user: User) {
+    const post = await this.findOne(id.toString(), user);
+    await this.postsRepository.remove(post);
+    return { message: `Post with ID ${id} has been deleted` };
+  }
 
   async findPostById(id: string) {
     return await this.postsRepository.findOne({

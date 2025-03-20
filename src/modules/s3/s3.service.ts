@@ -27,6 +27,6 @@ export class S3Service {
 
     await this.s3.send(new PutObjectCommand(uploadParams));
 
-    return `https://${this.awsConfigService.s3BucketName}.s3.${this.awsConfigService.region}.amazonaws.com/${fileName}`;
+    return `https://${this.awsConfigService.s3BucketName}.s3.${this.awsConfigService.region}.amazonaws.com/${directory}/${fileName}`;
   }
 }

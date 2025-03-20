@@ -18,7 +18,7 @@ export class RoleGuard implements CanActivate {
     );
 
     if (!contextRoles) {
-      return false;
+      return true;
     }
 
     const request = context
