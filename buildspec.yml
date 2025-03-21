@@ -8,6 +8,7 @@ phases:
       - echo "Installing dependencies..."
       - npm install 
       - npm install -g @nestjs/cli
+      - npm install -D @types/multer
 
   pre_build:
     commands:
