@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody } from '@nestjs/swagger';
 import { ApiConsumes } from '@nestjs/swagger';
 import { ApiOperation } from '@nestjs/swagger';
+import { Express } from 'express';
 
 @Controller('images')
 export class ImagesController {

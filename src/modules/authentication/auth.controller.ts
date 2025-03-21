@@ -21,7 +21,7 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { User } from '../users/entities/user.entity';
 import { RequestUser } from 'src/decorators/request-user.decorator';
-
+import { Express } from 'express';
 @ApiTags('유저 인증')
 @Controller('auth')
 // @UseGuards(JwtAuthGuard)
@@ -90,12 +90,12 @@ export class AuthController {
     });
   }
 
-  // @Post('upload-profile')
-  // @UseInterceptors(FileInterceptor('file'))
-  // async uploadProfile(
-  //   @UploadedFile() file: Express.Multer.File,
-  //   @RequestUser() user: User,
-  // ) {
-  //   return { resultUrl: await this.authService.uploadProfile(file) };
-  // }
+  @Post('upload-profile')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadProfile(
+    @UploadedFile() file: Express.Multer.File,
+    @RequestUser() user: User,
+  ) {
+    return { resultUrl: await this.authService.uploadProfile(file) };
+  }
 }
