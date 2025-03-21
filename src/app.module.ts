@@ -11,12 +11,14 @@ import { PostsModule } from './modules/posts/posts.module';
 import { AppDataSource } from './ormconfig';
 import { CommentsModule } from './modules/comments/comments.module';
 import { ImagesModule } from './modules/images/images.module';
+import { AuthGoogleModule } from './modules/auth-google/auth-google.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(AppDataSource.options),
     UsersModule,
     AuthModule,
+    AuthGoogleModule,
     AwsConfigModule,
     S3Module,
     PostsModule,

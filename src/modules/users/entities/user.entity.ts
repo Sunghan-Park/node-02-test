@@ -3,6 +3,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { Post } from 'src/modules/posts/entities/post.entity';
 import { Comment } from 'src/modules/comments/entities/comment.entity';
 import { UserRole } from '../enums/user-role.enum';
+import { RegisterType } from '../enums/register-type.enum';
 
 @Entity()
 export class User extends BaseEntity {
@@ -12,8 +13,14 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
+
+  @Column({ nullable: true })
+  socialId: string;
+
+  @Column({ type: 'enum', enum: RegisterType, default: RegisterType.NORMAL })
+  registerType: RegisterType;
 
   @Column({ enum: UserRole, default: UserRole.USER })
   role: UserRole;

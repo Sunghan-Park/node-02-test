@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { RegisterDto } from '../authentication/dto/register.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRole } from './enums/user-role.enum';
-
+import { RegisterType } from './enums/register-type.enum';
 @Injectable()
 export class UsersService {
   constructor(
@@ -33,6 +33,15 @@ export class UsersService {
         role: true,
         password: true,
       },
+    });
+  }
+
+  async findUserBySocialId(
+    socialId: string,
+    registerType: RegisterType,
+  ): Promise<User | null> {
+    return await this.userRepository.findOne({
+      where: { socialId, registerType },
     });
   }
 }

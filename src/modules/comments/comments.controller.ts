@@ -23,7 +23,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../authentication/jwt-auth.guard';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { ListAllCommentsDto } from './dto/list-all-comments.dto';
 import { CommentRoleGuard } from './guards/comment-role.guard';
 @Controller('post/:postId/comments')

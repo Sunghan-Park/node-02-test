@@ -22,7 +22,4 @@ export const AppDataSource = new DataSource({
   entities: [entity],
   migrations: [migration],
   subscribers: [PostViewSubscriber, CommentSubscriber],
-  ssl: {
-    rejectUnauthorized: false,
-  },
 });

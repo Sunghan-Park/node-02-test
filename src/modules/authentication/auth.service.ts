@@ -15,6 +15,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CookieOptions } from 'express';
 import { AppConfigService } from 'src/config/app/config.service';
 import { S3Service } from '../s3/s3.service';
+import { RegisterType } from '../users/enums/register-type.enum';
 @Injectable()
 export class AuthService {
   constructor(
@@ -28,9 +29,11 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto): Promise<ResponseRegisterDto> {
-    registerDto.password = await this.passwordUtil.hashPassword(
-      registerDto.password,
-    );
+    if (registerDto.password) {
+      registerDto.password = await this.passwordUtil.hashPassword(
+        registerDto.password,
+      );
+    }
     if (
       await this.userRepository.findOne({
         where: { email: registerDto.email },
@@ -39,6 +42,7 @@ export class AuthService {
       throw new ConflictException('이미 존재하는 이메일입니다.');
     }
     const user = await this.UsersService.createUser(registerDto);
+    user.registerType = RegisterType.NORMAL;
     return user;
   }
 
@@ -161,5 +165,36 @@ export class AuthService {
   async uploadProfile(file: Express.Multer.File) {
     const url = await this.s3Service.uploadFile(file, 'profile');
     return url;
+  }
+
+  handleGoogleAuth(user: User, origin: string) {
+    console.log('handleGoogleAuth called with user:', JSON.stringify(user));
+    console.log('Origin:', origin);
+
+    if (!user) {
+      console.error('No user provided to handleGoogleAuth');
+      throw new UnauthorizedException('User not found');
+    }
+
+    const { accessToken, accessOptions } = this.setJwtAccessToken(
+      user,
+      origin.toString(),
+    );
+    const { refreshToken, refreshOptions } = this.setJwtRefreshToken(
+      user,
+      origin.toString(),
+    );
+
+    console.log('Tokens generated - Access token exists:', !!accessToken);
+    console.log('Tokens generated - Refresh token exists:', !!refreshToken);
+
+    const tokens = {
+      accessToken,
+      refreshToken,
+      accessOptions,
+      refreshOptions,
+    };
+
+    return tokens;
   }
 }

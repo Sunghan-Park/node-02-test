@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
-import { JwtAuthGuard } from '../authentication/jwt-auth.guard';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { User } from '../users/entities/user.entity';
 import { RequestUser } from 'src/decorators/request-user.decorator';
 import { ApiBearerAuth, ApiQuery, ApiParam } from '@nestjs/swagger';
@@ -54,13 +54,13 @@ export class PostsController {
     @Body() updatePostDto: UpdatePostDto,
     @RequestUser() user: User,
   ) {
-    return this.postsService.update(+id, updatePostDto, user);
+    return this.postsService.update(id, updatePostDto, user);
   }
 
   @Delete(':id')
   @ApiParam({ name: 'id', type: String })
   @Roles(UserRole.USER, UserRole.ADMIN)
   remove(@Param('id') id: string, @RequestUser() user: User) {
-    return this.postsService.remove(+id, user);
+    return this.postsService.remove(id, user);
   }
 }

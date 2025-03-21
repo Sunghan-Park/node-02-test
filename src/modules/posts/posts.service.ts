@@ -133,14 +133,14 @@ export class PostsService {
 
     return data;
   }
-  async update(id: number, updatePostDto: UpdatePostDto, user: User) {
-    await this.findOne(id.toString(), user);
+  async update(id: string, updatePostDto: UpdatePostDto, user: User) {
+    await this.findOne(id, user);
     await this.postsRepository.update(id, updatePostDto);
-    return await this.findOne(id.toString(), user);
+    return await this.findOne(id, user);
   }
 
-  async remove(id: number, user: User) {
-    const post = await this.findOne(id.toString(), user);
+  async remove(id: string, user: User) {
+    const post = await this.findOne(id, user);
     await this.postsRepository.remove(post);
     return { message: `Post with ID ${id} has been deleted` };
   }
