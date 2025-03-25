@@ -1,0 +1,26 @@
+services:
+  database:
+    image: postgres:15
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rlfjrl12
+      POSTGRES_DB: nest_mk4
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nestjs-app:
+    build: .
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    command: sh -c "npm install && npm run build && npm run start:prod"
+
+volumes:
+  postgres_data:
