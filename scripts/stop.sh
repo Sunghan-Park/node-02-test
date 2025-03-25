@@ -1,7 +1,7 @@
 # stop.sh
 
 #!/bin/bash
-APP_NAME="nestjs-app"
+APP_NAME="nest_mk4"
 
 echo "Stopping application: $APP_NAME"
 
